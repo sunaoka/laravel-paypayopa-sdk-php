@@ -1,0 +1,13 @@
+parameters:
+
+    bootstrapFiles:
+        - .phpstan/classAliases.php
+
+    level: 9
+
+    paths:
+        - src/
+        - tests/
+
+    ignoreErrors:
+        - identifier: missingType.iterableValue
