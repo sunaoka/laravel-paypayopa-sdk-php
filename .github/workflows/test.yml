@@ -44,7 +44,7 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Migrate phpunit XML configuration
-        run: vendor/bin/phpunit --migrate-configuration || yes
+        run: vendor/bin/phpunit --migrate-configuration || true
 
       - name: Run test suite
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
