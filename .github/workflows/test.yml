@@ -10,6 +10,11 @@ jobs:
 
   test:
     runs-on: ${{ matrix.os }}
+
+    env:
+      latest_php: 8.3
+      latest_laravel: 11
+
     strategy:
       fail-fast: false
       matrix:
@@ -51,3 +56,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           fail_ci_if_error: false
+        if: matrix.php == env.latest_php && matrix.laravel == env.latest_laravel
