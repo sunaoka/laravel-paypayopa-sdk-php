@@ -27,20 +27,18 @@ class Client extends \PayPay\OpenPaymentAPI\Client
      */
     private ?array $fakeResponse;
 
-    private array $options;
-
     /**
      * @param  array{API_KEY: string, API_SECRET: string, MERCHANT_ID: string}  $auth
-     * @param  bool  $productionmode
-     * @param  GuzzleHttpClient|false  $requestHandler
-     * @param  array  $options
      *
      * @throws ClientException
      */
-    public function __construct($auth = null, $productionmode = false, $requestHandler = false, $options = [])
-    {
+    public function __construct(
+        array $auth,
+        bool $productionmode = false,
+        GuzzleHttpClient|false $requestHandler = false,
+        private readonly array $options = []
+    ) {
         $this->fakeResponse = null;
-        $this->options = $options;
 
         parent::__construct($auth, $productionmode, $requestHandler);
     }
