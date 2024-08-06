@@ -27,7 +27,7 @@ class FacadeTest extends TestCase
             new Response(201, body: json_encode($fakeResponse, JSON_THROW_ON_ERROR)),
         ]);
 
-        $payload = new CreateQrCodePayload();
+        $payload = new CreateQrCodePayload;
         $payload->setMerchantPaymentId('merchant_id');
         $payload->setCodeType('ORDER_QR');
 
