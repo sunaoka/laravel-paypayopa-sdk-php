@@ -27,7 +27,7 @@ class PayPayServiceProvider extends ServiceProvider implements DeferrableProvide
                 'API_KEY' => $config['api_key'],
                 'API_SECRET' => $config['api_secret'],
                 'MERCHANT_ID' => $config['merchant_id'],
-            ], $config['production_mode']);
+            ], $config['production_mode'], false, $config['options']);
         });
 
         $this->app->alias('PayPay', Client::class);

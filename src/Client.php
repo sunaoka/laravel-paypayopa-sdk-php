@@ -29,13 +29,15 @@ class Client extends \PayPay\OpenPaymentAPI\Client
 
     /**
      * @param  array{API_KEY: string, API_SECRET: string, MERCHANT_ID: string}  $auth
-     * @param  bool  $productionmode
-     * @param  GuzzleHttpClient|false  $requestHandler
      *
      * @throws ClientException
      */
-    public function __construct($auth = null, $productionmode = false, $requestHandler = false)
-    {
+    public function __construct(
+        array $auth,
+        bool $productionmode = false,
+        GuzzleHttpClient|false $requestHandler = false,
+        private readonly array $options = []
+    ) {
         $this->fakeResponse = null;
 
         parent::__construct($auth, $productionmode, $requestHandler);
@@ -43,17 +45,15 @@ class Client extends \PayPay\OpenPaymentAPI\Client
 
     public function http(): GuzzleHttpClient
     {
-        if (empty($this->fakeResponse)) {
-            return parent::http();
+        $options = $this->options;
+        $options['base_uri'] = $this->GetConfig('API_URL');
+
+        if (! empty($this->fakeResponse)) {
+            $mockHandler = new MockHandler([array_shift($this->fakeResponse)]);
+            $options['handler'] = HandlerStack::create($mockHandler);
         }
 
-        $mockHandler = new MockHandler([array_shift($this->fakeResponse)]);
-        $handlerStack = HandlerStack::create($mockHandler);
-
-        return new GuzzleHttpClient([
-            'base_uri' => $this->GetConfig('API_URL'),
-            'handler' => $handlerStack,
-        ]);
+        return new GuzzleHttpClient($options);
     }
 
     /**

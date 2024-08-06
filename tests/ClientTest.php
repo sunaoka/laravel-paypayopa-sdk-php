@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
 use PayPay\OpenPaymentAPI\ClientException;
 use PayPay\OpenPaymentAPI\Controller\CashBack;
 use PayPay\OpenPaymentAPI\Controller\ClientControllerException;
@@ -81,7 +82,7 @@ class ClientTest extends TestCase
             new Response(201, body: json_encode($fakeResponse, JSON_THROW_ON_ERROR)),
         ]);
 
-        $payload = new CreateQrCodePayload();
+        $payload = new CreateQrCodePayload;
         $payload->setMerchantPaymentId('merchant_id');
         $payload->setCodeType('ORDER_QR');
 
@@ -119,5 +120,32 @@ class ClientTest extends TestCase
 
         // @phpstan-ignore method.notFound
         $client->foo();
+    }
+
+    /**
+     * @throws ClientException
+     * @throws \ReflectionException
+     */
+    public function test_http_with_options(): void
+    {
+        $options = [
+            RequestOptions::PROXY => 'http://localhost:8125',
+            RequestOptions::CONNECT_TIMEOUT => 3.14,
+        ];
+        $client = new Client([
+            'API_KEY' => 'api_key',
+            'API_SECRET' => 'api_secret',
+            'MERCHANT_ID' => 'merchant_id',
+        ], options: $options);
+
+        $http = $client->http();
+
+        $class = new \ReflectionObject($http);
+        $property = $class->getProperty('config');
+        $config = $property->getValue($http);
+
+        self::assertIsArray($config);
+        self::assertSame($options[RequestOptions::PROXY], $config[RequestOptions::PROXY]);
+        self::assertSame($options[RequestOptions::CONNECT_TIMEOUT], $config[RequestOptions::CONNECT_TIMEOUT]);
     }
 }
