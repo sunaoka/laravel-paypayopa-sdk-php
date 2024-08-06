@@ -50,6 +50,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
                 'api_secret' => 'api_secret',
                 'merchant_id' => 'merchant_id',
                 'production_mode' => false,
+                'options' => [],
             ]);
         });
     }

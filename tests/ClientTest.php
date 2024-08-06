@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
 use PayPay\OpenPaymentAPI\ClientException;
 use PayPay\OpenPaymentAPI\Controller\CashBack;
 use PayPay\OpenPaymentAPI\Controller\ClientControllerException;
@@ -119,5 +120,30 @@ class ClientTest extends TestCase
 
         // @phpstan-ignore method.notFound
         $client->foo();
+    }
+
+    /**
+     * @throws ClientException
+     * @throws \ReflectionException
+     */
+    public function test_http_with_options(): void
+    {
+        $options = [
+            RequestOptions::PROXY => 'http://localhost:8125',
+        ];
+        $client = new Client([
+            'API_KEY' => 'api_key',
+            'API_SECRET' => 'api_secret',
+            'MERCHANT_ID' => 'merchant_id',
+        ], options: $options);
+
+        $http = $client->http();
+
+        $class = new \ReflectionObject($http);
+        $property = $class->getProperty('config');
+        $config = $property->getValue($http);
+
+        self::assertIsArray($config);
+        self::assertSame($options[RequestOptions::PROXY], $config['proxy']);
     }
 }
