@@ -130,6 +130,7 @@ class ClientTest extends TestCase
     {
         $options = [
             RequestOptions::PROXY => 'http://localhost:8125',
+            RequestOptions::CONNECT_TIMEOUT => 3.14,
         ];
         $client = new Client([
             'API_KEY' => 'api_key',
@@ -144,6 +145,7 @@ class ClientTest extends TestCase
         $config = $property->getValue($http);
 
         self::assertIsArray($config);
-        self::assertSame($options[RequestOptions::PROXY], $config['proxy']);
+        self::assertSame($options[RequestOptions::PROXY], $config[RequestOptions::PROXY]);
+        self::assertSame($options[RequestOptions::CONNECT_TIMEOUT], $config[RequestOptions::CONNECT_TIMEOUT]);
     }
 }
