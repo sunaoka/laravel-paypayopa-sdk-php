@@ -45,7 +45,10 @@
     },
     "config": {
         "audit": {
-            "ignore": ["firebase/php-jwt"]
+            "ignore": [
+                "firebase/php-jwt",
+                "laravel/framework"
+            ]
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
