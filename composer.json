@@ -13,7 +13,7 @@
     "require": {
         "php": "^8.1",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
-        "paypayopa/php-sdk": "^2.0"
+        "paypayopa/php-sdk": "^2.0.8"
     },
     "require-dev": {
         "laravel/pint": "^1.17.0",
@@ -45,7 +45,10 @@
     },
     "config": {
         "audit": {
-            "ignore": ["firebase/php-jwt"]
+            "ignore": [
+                "firebase/php-jwt",
+                "laravel/framework"
+            ]
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",

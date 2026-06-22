@@ -13,7 +13,7 @@ jobs:
 
     env:
       latest_php: 8.5
-      latest_laravel: 12
+      latest_laravel: 13
 
     strategy:
       fail-fast: false
@@ -62,7 +62,7 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
